@@ -2,10 +2,15 @@
 
 namespace Tourze\WechatWorkExternalContactModel\Tests;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Tourze\WechatWorkExternalContactModel\ExternalContactInterface;
 
-class ExternalContactTest extends TestCase
+/**
+ * @internal
+ */
+#[CoversClass(ExternalContactInterface::class)]
+final class ExternalContactTest extends TestCase
 {
     /**
      * 创建一个实现ExternalContactInterface的测试类
@@ -14,14 +19,14 @@ class ExternalContactTest extends TestCase
         ?string $externalUserId = null,
         ?string $unionId = null,
         ?string $nickname = null,
-        ?string $avatar = null
+        ?string $avatar = null,
     ): ExternalContactInterface {
-        return new class($externalUserId, $unionId, $nickname, $avatar) implements ExternalContactInterface {
+        return new class ($externalUserId, $unionId, $nickname, $avatar) implements ExternalContactInterface {
             public function __construct(
                 private readonly ?string $externalUserId,
                 private readonly ?string $unionId,
                 private readonly ?string $nickname,
-                private readonly ?string $avatar
+                private readonly ?string $avatar,
             ) {
             }
 
@@ -50,7 +55,7 @@ class ExternalContactTest extends TestCase
     /**
      * 测试正常情况下的外部联系人接口实现
      */
-    public function testExternalContactWithValidData()
+    public function testExternalContactWithValidData(): void
     {
         $externalUserId = 'wmqfaVDAAAA1234567890';
         $unionId = 'unionid_1234567890';
@@ -73,7 +78,7 @@ class ExternalContactTest extends TestCase
     /**
      * 测试外部联系人接口实现返回空值
      */
-    public function testExternalContactWithNullValues()
+    public function testExternalContactWithNullValues(): void
     {
         $externalContact = $this->createExternalContactImplementation();
 
@@ -86,7 +91,7 @@ class ExternalContactTest extends TestCase
     /**
      * 测试外部联系人接口实现部分字段为空
      */
-    public function testExternalContactWithPartialNullValues()
+    public function testExternalContactWithPartialNullValues(): void
     {
         $externalUserId = 'wmqfaVDAAAA1234567890';
         $externalContact = $this->createExternalContactImplementation($externalUserId);
@@ -100,7 +105,7 @@ class ExternalContactTest extends TestCase
     /**
      * 测试特殊字符处理
      */
-    public function testExternalContactWithSpecialCharacters()
+    public function testExternalContactWithSpecialCharacters(): void
     {
         $externalUserId = 'wmqfaVDAAAA1234567890';
         $unionId = 'unionid_1234567890';
@@ -123,7 +128,7 @@ class ExternalContactTest extends TestCase
     /**
      * 测试边界情况：空字符串
      */
-    public function testExternalContactWithEmptyStrings()
+    public function testExternalContactWithEmptyStrings(): void
     {
         $externalContact = $this->createExternalContactImplementation('', '', '', '');
 
@@ -131,11 +136,11 @@ class ExternalContactTest extends TestCase
         $this->assertSame('', $externalContact->getUnionId());
         $this->assertSame('', $externalContact->getNickname());
         $this->assertSame('', $externalContact->getAvatar());
-        
+
         // 空字符串和null是不同的
         $this->assertNotNull($externalContact->getExternalUserId());
         $this->assertNotNull($externalContact->getUnionId());
         $this->assertNotNull($externalContact->getNickname());
         $this->assertNotNull($externalContact->getAvatar());
     }
-} 
+}

@@ -24,7 +24,7 @@ enum ContactType: int implements Labelable, Itemable, Selectable
 
     public function getLabel(): string
     {
-        return match($this) {
+        return match ($this) {
             self::WECHAT => '微信用户',
             self::WEWORK => '企业微信用户',
         };
